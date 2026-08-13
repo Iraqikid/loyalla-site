@@ -1,0 +1,22 @@
+# loyalla.ae — static hosting rules (one.com / Apache-style hosts)
+# The Next.js static export serves /en/... and /ar/...; these rules
+# cover the bare paths a visitor might type.
+
+DirectoryIndex index.html
+
+RedirectMatch 302 ^/$ /en/
+Redirect 302 /venues /en/venues/
+Redirect 302 /privacy /en/privacy/
+Redirect 302 /terms /en/terms/
+
+ErrorDocument 404 /en/index.html
+
+# Sensible caching: hashed build assets forever, HTML always fresh
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2?|jpg|jpeg|png|webp|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
